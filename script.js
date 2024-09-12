@@ -1,9 +1,21 @@
+// Get the necessary elements from the form
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
-const emailError = document.getElementById('emailError');
-const passwordError = document.getElementById('passwordError');
-const successMessage = document.getElementById('successMessage');
 const submitButton = document.getElementById('submitButton');
+
+// Create error/success message containers
+const emailError = document.createElement('div');
+emailError.style.color = 'red';
+emailInput.insertAdjacentElement('afterend', emailError);
+
+const passwordError = document.createElement('div');
+passwordError.style.color = 'red';
+passwordInput.insertAdjacentElement('afterend', passwordError);
+
+const successMessage = document.createElement('span');
+successMessage.style.color = 'green';
+successMessage.style.display = 'none';
+submitButton.insertAdjacentElement('afterend', successMessage);
 
 // Email validation function
 emailInput.addEventListener('input', () => {
@@ -34,18 +46,24 @@ function checkValidation() {
     if (!emailError.textContent && !passwordError.textContent) {
         successMessage.style.display = 'block';
         successMessage.textContent = 'All good to go!';
+    } else {
+        successMessage.style.display = 'none';
     }
 }
 
 // Submit event handler
 submitButton.addEventListener('click', (e) => {
     e.preventDefault();
+    
+    // Check if there are no validation errors
     if (!emailError.textContent && !passwordError.textContent) {
         const isConfirmed = confirm('Do you want to proceed with the signup?');
         if (isConfirmed) {
             alert('Successful signup!');
         } else {
-            // Redirect to the same page and clear inputs
+            // Clear the form inputs and reload the page
+            emailInput.value = '';
+            passwordInput.value = '';
             window.location.reload();
         }
     }
